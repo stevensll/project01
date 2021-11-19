@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <dirent.h>
-#DEFINE INPUT_SIZE 256
+#define INPUT_SIZE 256
 
 
 int main(){
