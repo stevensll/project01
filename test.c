@@ -19,11 +19,13 @@ int main(){
         char[INPUT_SIZE] input;
         fgets(input, sizeof(input), stdin);
         sscanf(input, "%s", input);
+        char ** args = parse_args(input);
+        
         //run parse args
         //if cd or exit
         //run exec
         //fork
     }
-    print
+    printf("Exited shell\n");
     return 0;
 }
