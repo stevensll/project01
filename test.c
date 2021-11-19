@@ -14,7 +14,7 @@
 int main(){
     
     printf("Welcome to \n");
-    running = 1;
+    int running = 1;
     while (running) {
         printf("# ");
         char[INPUT_SIZE] input;
