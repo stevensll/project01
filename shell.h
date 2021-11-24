@@ -8,8 +8,11 @@
 #include <time.h>
 #include <dirent.h>
 
+
+void print_2d_arr( char ** arr);
 //parse args
+char ** parse_args( char * line );
 
 //command num
 
-//command separator
+//command separators

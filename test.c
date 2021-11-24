@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <dirent.h>
-#include <shell.h>
+#include "shell.h"
 #define INPUT_SIZE 256
 
 
@@ -17,17 +17,22 @@ int main(){
     int running = 1;
     while (running) {
         printf("# ");
-        char[INPUT_SIZE] input;
+        char input[INPUT_SIZE];
         fgets(input, sizeof(input), stdin);
         sscanf(input, "%s", input);
         char ** args = parse_args(input);
-        if (!args[0]) {
+        print_2d_arr(args);
+        if (args[0]) {
             if (!strcmp(args[0], "exit")) {
                 running = 0;
                 break;
             }
             else if (!strcmp(args[0], "cd")) {
-                chdir(args[0]);
+                chdir(args[1]);
+            }
+            else if (args[1]) {
+                printf("%s", args[1]);
+                // execvp(args[0], args);
             }
         }
         //run parse args
