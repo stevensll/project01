@@ -1,22 +1,36 @@
 #include "shell.h"
 
-char ** parse_args( char * line ) {
-    char ** values = calloc(100, sizeof(char *));
+
+
+char ** get_cmd_line( char * line ) {
+    char *pos;
+    if ((pos=strchr(line, '\n')) != NULL)
+        *pos = '\0';
+    char ** values = calloc(sizeof(line)/sizeof(char), sizeof(char *));
     char * curr = line;
-    char * arg;
     int i = 0;
     while (curr) {
-        arg = strsep(&curr, " ");
-        values[i] = arg;
+        values[i] = strsep(&curr, ";");
         i++;
     }
-    //values[i] = '\0';
     return values;
 }
-void print_2d_arr( char ** arr){
+char ** get_cmd_args(char * cmd){
+    char ** parts = calloc(sizeof(cmd)/sizeof(char), sizeof(char *));
+    char * curr = cmd;
+    int i = 0;
+    while (curr){
+        parts[i] = strsep(&curr, " ");
+        i++;
+    }
+    parts[i] = NULL;
+    return parts;
+}
+void print_string_arr( char ** arr){
     int i = 0;
     while(arr[i]){
         printf("%s\n", arr[i]);
         i++;
     }
+    printf("\n");
 }

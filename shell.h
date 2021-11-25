@@ -8,11 +8,17 @@
 #include <time.h>
 #include <dirent.h>
 
+/*
+    Prints out an array of strings
+*/
+void print_string_arr( char ** arr);
 
-void print_2d_arr( char ** arr);
-//parse args
-char ** parse_args( char * line );
+/*
+    Stores a line of input into an array of strings, separated by ;
+*/
+char ** get_cmd_line( char * line );
 
+char ** get_cmd_args(char * cmd);
 //command num
 
 //command separators
