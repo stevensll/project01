@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <dirent.h>
 #include "shell.h"
@@ -12,35 +13,45 @@
 
 
 int main(){
-    
-    printf("Welcome to \n");
+    //start of shell
+    printf("Welcome to Windows Powershell!\n");
     int running = 1;
+    //loop for each command line
     while (running) {
         printf("# ");
         char input[INPUT_SIZE];
         fgets(input, sizeof(input), stdin);
         char ** cmds = get_cmd_line(input);
         // print_string_arr(args);
-        if (cmds[0]) {
-            printf("This is cmd[0]: %s\n", cmds[0]);
-            char ** args = get_cmd_args(cmds[0]);
-            execvp(cmds[0], args);
-            // if (!strcmp(args[0], "exit")) {
-            //     running = 0;
-            //     break;
-            // }
-            // else if (!strcmp(args[0], "cd")) {
-            //     chdir(args[1]);
-            // }
-            // else if (args[1]) {
-            //     printf("%s", args[1]);
-            //     execvp(args[0], args);
-            // }
+        int j = 0;
+        while (cmds[j]) {
+            printf("This is cmd[%d]: %s\n", j, cmds[j]);
+            char ** args = get_cmd_args(cmds[j]);
+            if (!strcmp(args[0], "exit")) {
+                printf("Exited shell\n");
+                return 0;
+            }
+            else if (!strcmp(args[0], "cd")) {
+                chdir(args[1]);
+            }
+            else {
+                int process;
+                process = fork();
+                //if child
+                if (!process) {
+                    execvp(cmds[0], args);
+                }
+                else {
+                    int status;
+                    wait(&status);
+                }
+            }
+            j++;
         }
         //run parse args
         //if cd or exit
-        //run exec
         //fork
+        //run exec
     }
     printf("Exited shell\n");
     return 0;
