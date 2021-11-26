@@ -1,7 +1,5 @@
 #include "shell.h"
 
-
-
 char ** get_cmd_line( char * line ) {
     char *pos;
     if ((pos=strchr(line, '\n')) != NULL)
@@ -15,6 +13,7 @@ char ** get_cmd_line( char * line ) {
     }
     return values;
 }
+
 char ** get_cmd_args(char * cmd){
     char ** parts = calloc(sizeof(cmd)/sizeof(char), sizeof(char *));
     char * curr = cmd;
@@ -26,6 +25,8 @@ char ** get_cmd_args(char * cmd){
     parts[i] = NULL;
     return parts;
 }
+
+
 void print_string_arr( char ** arr){
     int i = 0;
     while(arr[i]){

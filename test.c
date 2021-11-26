@@ -14,7 +14,7 @@
 
 int main(){
     //start of shell
-    printf("Welcome to Windows Powershell!\n");
+    printf("Welcome to Shell!\n");
     int running = 1;
     //loop for each command line
     while (running) {
@@ -24,6 +24,7 @@ int main(){
         char ** cmds = get_cmd_line(input);
         // print_string_arr(args);
         int j = 0;
+        //run for every command separated by ;
         while (cmds[j]) {
             printf("This is cmd[%d]: %s\n", j, cmds[j]);
             char ** args = get_cmd_args(cmds[j]);
@@ -39,7 +40,7 @@ int main(){
                 process = fork();
                 //if child
                 if (!process) {
-                    execvp(cmds[0], args);
+                    execvp(cmds[j], args);
                 }
                 else {
                     int status;

@@ -9,15 +9,18 @@
 #include <dirent.h>
 
 /*
-    Prints out an array of strings
+    Prints out an array of strings, given an array of strings
 */
 void print_string_arr( char ** arr);
 
 /*
-    Stores a line of input into an array of strings, separated by ;
+    Parses a line of input (a string) for ';' and returns an array of strings 
 */
 char ** get_cmd_line( char * line );
 
+/*
+    Parses a line of input (a string) for ' ' and returns an array of strings 
+*/
 char ** get_cmd_args(char * cmd);
 //command num
 
