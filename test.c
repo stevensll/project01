@@ -26,7 +26,7 @@ int main(){
         int j = 0;
         //run for every command separated by ;
         while (cmds[j]) {
-            printf("This is cmd[%d]: %s\n", j, cmds[j]);
+            //printf("This is cmd[%d]: %s\n", j, cmds[j]);
             char ** args = get_cmd_args(cmds[j]);
             if (!strcmp(args[0], "exit")) {
                 printf("Exited shell\n");
