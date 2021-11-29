@@ -22,6 +22,8 @@ char ** get_cmd_line( char * line );
     Parses a line of input (a string) for ' ' and returns an array of strings 
 */
 char ** get_cmd_args(char * cmd);
-//command num
 
-//command separators
+/*
+    Parses a pipe for '|' and returns a two string array containing the piped commands (ended not using this)
+*/
+char ** get_cmd_from_pipe(char * line);

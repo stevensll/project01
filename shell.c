@@ -35,3 +35,14 @@ void print_string_arr( char ** arr){
     }
     printf("\n");
 }
+
+char ** get_cmd_from_pipe(char * line) {
+    char ** values = calloc(2, sizeof(char *));
+    char * curr = line;
+    int i = 0;
+    while (curr) {
+        values[i] = strsep(&curr, "|");
+        i++;
+    }
+    return values;
+}
