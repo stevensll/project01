@@ -25,10 +25,10 @@ int main(){
         char ** cmds = get_cmd_line(input);
         // print_string_arr(args);
         int j = 0;
-        char * cmd = cmd;
+        char * cmd = cmds[j];
         printf("%s\n", cmd);
         //run for every command separated by ;
-        while (cmd) {
+        while (cmds[j]) {
             //printf("This is cmd[%d]: %s\n", j, cmd);
             char ** args = get_cmd_args(cmd);
             //if exit
