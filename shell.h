@@ -11,7 +11,7 @@
 /*
     Prints out an array of strings, given an array of strings
 */
-void print_string_arr( char ** arr);
+void print_string_arr(char ** arr);
 
 /*
     Parses a line of input (a string) for ';' and returns an array of strings 

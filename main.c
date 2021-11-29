@@ -7,10 +7,9 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <dirent.h>
-
+#include "shell.h"
 
 int main(){
-    
 
     return 0;
 }

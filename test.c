@@ -11,11 +11,13 @@
 #include "shell.h"
 #define INPUT_SIZE 256
 #define OUTPUT_SIZE 1000
-
+#define NAME "PShell"
 
 int main(){
     //start of shell
-    printf("Welcome to Shell!\n");
+    printf("Welcome to ");
+    printf("\033[0;36m");
+    printf("%s\n\033[0m", NAME);
     int running = 1;
     //loop for each command line
     while (running) {
@@ -23,6 +25,7 @@ int main(){
         char input[INPUT_SIZE];
         fgets(input, sizeof(input), stdin);
         char ** cmds = get_cmd_line(input);
+        print_string_arr(cmds);
         // print_string_arr(args);
         int j = 0;
         char * cmd = cmds[j];
