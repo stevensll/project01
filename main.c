@@ -135,7 +135,7 @@ int main(){
             j++;
             cmd = cmds[j];
         }
-        // free(cmds);
+        free(cmds);
     }
     printf("Exited shell\n");
     return 0;
