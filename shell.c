@@ -69,3 +69,16 @@ char ** get_cmd_from_operator(char * line, char * operator) {
     }
     return values;
 }
+
+void pwd(char * color){
+    printf("%s", color);
+    FILE *wd;
+    char data[100];
+    wd = popen("pwd", "r");
+    fgets(data, 100, wd);
+    pclose(wd);
+    char * copy = data;
+    data[strlen(data)-1] = '\0';
+    printf("%s", data);
+    printf("\033[0m");
+}

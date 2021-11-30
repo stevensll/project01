@@ -8,6 +8,7 @@
 #include <time.h>
 #include <dirent.h>
 
+
 /*
     Prints out an array of strings, given an array of strings
 */
@@ -27,3 +28,8 @@ char ** get_cmd_args(char * cmd);
     Parses a pipe for '|', '>', or '<', and returns a two string array containing the piped or redirected commands
 */
 char ** get_cmd_from_operator(char * line, char * operator);
+
+/*
+    Prints the current working directory in the given color
+*/
+void pwd(char * color);
