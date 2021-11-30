@@ -2,8 +2,18 @@
 
 //SETUP COMMANDS--------------------------------------------------------------------------------------------------
 
-void pwd(char * color){
-    printf("%s", color);
+void pwd(char color){
+    char * formula;
+    if (color == 'r') {
+        formula = "\033[0;31m";
+    }
+    else if (color == 'b') {
+        formula = "\033[0;34m";
+    }
+    else {
+        formula = "\033[0;32m";
+    }
+    printf("%s", formula);
     FILE *wd;
     char data[100];
     wd = popen("pwd", "r");

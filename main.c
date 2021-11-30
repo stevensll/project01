@@ -10,9 +10,6 @@
 #include <dirent.h>
 #include "shell.h"
 #define NAME "PSHell"
-#define BLUE "\033[0;34m"
-#define RED "\033[0;31m"
-#define GREEN "\033[0;32m" 
 #define INPUT_SIZE 500
 #define NAME "PSHell"
 
@@ -22,13 +19,14 @@ int main(){
     printf("Welcome to ");
     printf("\033[0;36m");
     printf("%s\n\033[0m", NAME);
+    char color = 'r';
     
     //loop for each command line
     int running = 1;
     while (running) {
 
-        //print current directory along with "# "
-        pwd(RED);
+        //print current directory in color along with "# "
+        pwd(color);
         printf("# ");
 
         //get line of input, parses it for ';' to get each command segment
@@ -83,6 +81,21 @@ int main(){
                 //if cd
                 else if (!strcmp(args[0], "cd")) {
                     chdir(args[1]);
+                }            
+
+                else if (!strcmp(args[0], "color")) {
+                    if (!strcmp(args[1], "blue")) {
+                        color = 'b';
+                    }
+                    else if (!strcmp(args[1], "green")) {
+                        color = 'g';
+                    }
+                    else if (!strcmp(args[1], "red")) {
+                        color = 'r';
+                    }
+                    else {
+                        printf("Invalid Color. Try \"blue\", \"green\", or \"red\". \n");
+                    }
                 }            
 
                 //all other functions

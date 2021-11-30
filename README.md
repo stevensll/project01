@@ -15,7 +15,7 @@
 * run multiple commands in one line using `;`
 * two argument piping using ` | `
 * ~~basic redirection using `<` and `>`~~
- * display working directory with color of choosing 
+ * `color` to display working directory with color of choosing 
 
 ## Usage
 
@@ -27,8 +27,14 @@
   ls -a ;echo hi  //works
   ```
   
-  You can edit the working directory color by changing the input of `pwd()`  in the `main.c`  file. Supported colors are `RED, BLUE, GREEN`
-  
+  You can edit the working directory color by using the custom command `color` using the arguments blue, green, or red.
+
+  ```c
+  color blue //changes directory color to blue
+  color red //changes directory color to red
+  color green //changes directory color to green
+  color brown //Displays message "Invalid Color. Try 'blue', 'green', or 'red'."
+  ```  
 
 ## Attempts
 

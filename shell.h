@@ -15,7 +15,7 @@
 /*
     Prints the current working directory in the given color
 */
-void pwd(char * color);
+void pwd(char color);
 
 //----------------------------------------------------------------------------------------------------------------
 
