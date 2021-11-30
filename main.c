@@ -19,7 +19,7 @@ int main(){
     printf("Welcome to ");
     printf("\033[0;36m");
     printf("%s\n\033[0m", NAME);
-    char color = 'r';
+    char color = 'g';
     
     //loop for each command line
     int running = 1;
