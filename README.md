@@ -38,7 +38,11 @@
 
 ## Attempts
 
+Tried to implement the and operator (&&)
+
 ## Bugs
+
+limit on input sizes
 
 ## Function Headers
 
