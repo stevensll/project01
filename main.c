@@ -13,8 +13,7 @@
 #define BLUE "\033[0;34m"
 #define RED "\033[0;31m"
 #define GREEN "\033[0;32m" 
-#define INPUT_SIZE 256
-#define OUTPUT_SIZE 5000
+#define INPUT_SIZE 500
 #define NAME "PSHell"
 
 int main(){
@@ -88,93 +87,34 @@ int main(){
 
                 //all other functions
                 else {
-
-                    int process;
-                    process = fork();
-
-                    //if child, exec command
-                    if (!process) {
-                        int err = execvp(cmd, args);
-                        if (err == -1) printf("%s\n", strerror(errno));
-                    }
-                    //if parent, wait for child
-                    else {
-                        int status;
-                        wait(&status);
-                    }
+                    exec_cmd(cmd, args);
                 }
+
                 free(args);
             }
+
+            //if special case ('|', '>', or '<')
             else {
+
+                //if pipe
                 if (pipe) {
-                    //printf("cmd1: %s\ncmd2: %s\n", inputs[0], inputs[1]);
-                    FILE *output, *input;
-                    char data[OUTPUT_SIZE];
-                    output = popen(inputs[0], "r");
-                    input = popen(inputs[1], "w");
-                    // while (fgets(data, OUTPUT_SIZE, output)) {
-                    //     printf("%s", data);
-                    // }
-                    while (fgets(data, OUTPUT_SIZE, output)) {
-                        fputs(data, input);
-                    }
-                    pclose(output);
-                    pclose(input);
+                    exec_pipe(inputs);
                 }
 
-                //if redirection
                 //if redirection out
                 else if (redir_out) {
-                    int out = open(inputs[1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-                    if(out < 0) printf("%s", strerror(errno));
-                    int stdout_copy = dup(STDOUT_FILENO);
-                    dup2(out, STDOUT_FILENO);
-                    //eval
-
-                    int process;
-                    process = fork();
-                    //if child
-                    if (!process) {
-                        int err = execvp(inputs[0], get_cmd_args(inputs[0]));
-                        if (err == -1) printf("%s\n", strerror(errno));
-                    }
-                    else {
-                        int status;
-                        wait(&status);
-                    }
-                    dup2(stdout_copy, STDOUT_FILENO);
-                    close(out);
-                    close(stdout_copy);
+                    exec_redir_out(inputs);
                 }
+
                 //if redirection in
                 else if (redir_in) {
-                    int in = open(inputs[1], O_RDONLY);
-                    if(in < 0) printf("Error redirecting to in file\n%s\n", strerror(errno));
-                    int stdin_copy = dup(STDIN_FILENO);
-                    dup2(in, STDIN_FILENO);
-                    //eval
-
-                    int process;
-                    process = fork();
-                    //if child
-                    if (!process) {
-                        int err = execvp(inputs[0], get_cmd_args(inputs[0]));
-                        if (err == -1) printf("Error running cmd\n%s\n", strerror(errno));
-                    }
-                    else {
-                        int status;
-                        wait(&status);
-                    }
-
-                    dup2(stdin_copy, STDIN_FILENO);
-                    close(in);
-                    close(stdin_copy);
+                    exec_redir_in(inputs);
                 }
 
                 free(inputs);
+            }
 
-                }
-
+            //increment j and move on to next command
             j++;
             cmd = cmds[j];
 

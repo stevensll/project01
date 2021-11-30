@@ -1,5 +1,24 @@
 #include "shell.h"
 
+//SETUP COMMANDS--------------------------------------------------------------------------------------------------
+
+void pwd(char * color){
+    printf("%s", color);
+    FILE *wd;
+    char data[100];
+    wd = popen("pwd", "r");
+    fgets(data, 100, wd);
+    pclose(wd);
+    char * copy = data;
+    data[strlen(data)-1] = '\0';
+    printf("%s", data);
+    printf("\033[0m");
+}
+
+//----------------------------------------------------------------------------------------------------------------
+
+//PARSE COMMANDS--------------------------------------------------------------------------------------------------
+
 char ** get_cmd_line(char * line) {
 
     //deletes newline at the end of the input
@@ -44,16 +63,6 @@ char ** get_cmd_args(char * cmd){
     return args;
 }
 
-
-void print_string_arr(char ** arr){
-    int i = 0;
-    while(arr[i]){
-        printf("arr[%d] = %s\n", i, arr[i]);
-        i++;
-    }
-    printf("\n");
-}
-
 char ** get_cmd_from_operator(char * line, char * operator) {
     char ** values = calloc(2, sizeof(char *));
     char * curr = line;
@@ -75,15 +84,88 @@ char ** get_cmd_from_operator(char * line, char * operator) {
     return values;
 }
 
-void pwd(char * color){
-    printf("%s", color);
-    FILE *wd;
-    char data[100];
-    wd = popen("pwd", "r");
-    fgets(data, 100, wd);
-    pclose(wd);
-    char * copy = data;
-    data[strlen(data)-1] = '\0';
-    printf("%s", data);
-    printf("\033[0m");
+void print_string_arr(char ** arr){
+    int i = 0;
+    while(arr[i]){
+        printf("arr[%d] = %s\n", i, arr[i]);
+        i++;
+    }
+    printf("\n");
 }
+
+//-----------------------------------------------------------------------------------------------------------------
+
+//EXEC COMMANDS----------------------------------------------------------------------------------------------------
+
+void exec_pipe(char ** inputs) {
+    FILE *output, *input;
+    char data[OUTPUT_SIZE];
+    output = popen(inputs[0], "r");
+    input = popen(inputs[1], "w");
+    while (fgets(data, OUTPUT_SIZE, output)) {
+        fputs(data, input);
+    }
+    pclose(output);
+    pclose(input);
+}
+
+void exec_redir_out(char ** inputs) {
+    //create file
+    int out = open(inputs[1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+    //error check
+    if (out < 0) printf("%s", strerror(errno));
+    //save stdout
+    int stdout_copy = dup(STDOUT_FILENO);
+    //redirect stdout to file
+    dup2(out, STDOUT_FILENO);
+
+    //execute command
+    exec_cmd(inputs[0], get_cmd_args(inputs[0]));
+
+    //redirect stdout back to backed up copy
+    dup2(stdout_copy, STDOUT_FILENO);
+
+    //close files
+    close(out);
+    close(stdout_copy);
+}
+
+void exec_redir_in(char ** inputs) {
+
+    //create file
+    int in = open(inputs[1], O_RDONLY);
+    //error check 
+    if (in < 0) printf("Error redirecting to in file\n%s\n", strerror(errno));
+    //save stdin
+    int stdin_copy = dup(STDIN_FILENO);
+    //redirect stdin to file
+    dup2(in, STDIN_FILENO);
+                    
+    //evaluate command
+    exec_cmd(inputs[0], get_cmd_args(inputs[0]));
+
+    //redirect stdin back to backed up copy
+    dup2(stdin_copy, STDIN_FILENO);
+
+    //close files
+    close(in);
+    close(stdin_copy);
+
+}
+
+void exec_cmd(char * cmd, char ** args) {
+    int process;
+    process = fork();
+    //if child, exec command
+    if (!process) {
+        int err = execvp(cmd, args);
+        if (err == -1) printf("%s\n", strerror(errno));
+    }
+    //if parent, wait for child
+    else {
+        int status;
+        wait(&status);
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------
