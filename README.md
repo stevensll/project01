@@ -9,13 +9,13 @@
 ## Features
 
   
-
+* run bash commands
 * `exit` to close the shell
 * `cd` to change directories
-* multiple commands in one line using `;`
+* run multiple commands in one line using `;`
 * two argument piping using ` | `
 * ~~basic redirection using `<` and `>`~~
- * displayed working directory with color of choosing 
+ * display working directory with color of choosing 
 
 ## Usage
 
@@ -27,15 +27,12 @@
   ls -a ;echo hi  //works
   ```
   
-  You can edit the working directory color by changing the input of `pwd()`  in the `main.c`  file. Supported colors are `red, blue, green`
+  You can edit the working directory color by changing the input of `pwd()`  in the `main.c`  file. Supported colors are `RED, BLUE, GREEN`
   
 
 ## Attempts
 
 ## Bugs
-
- Working on redirection and error handling as of 11/30 
-  
 
 ## Function Headers
 
