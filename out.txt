@@ -1,9 +1,0 @@
-README.md
-main.c
-main.o
-makefile
-out.txt
-shell.c
-shell.h
-shell.o
-shell.out
