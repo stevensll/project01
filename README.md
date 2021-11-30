@@ -27,7 +27,7 @@
   ls -a ;echo hi  //works
   ```
   
-  You can edit the working directory color by using the custom command `color` using the arguments blue, green, or red.
+  You can edit the printed working directory color by using the custom command `color` using the arguments blue, green, or red.
 
   ```c
   color blue //changes directory color to blue
