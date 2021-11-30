@@ -18,80 +18,86 @@
 #define NAME "PSHell"
 
 int main(){
+
     //start of shell
     printf("Welcome to ");
     printf("\033[0;36m");
     printf("%s\n\033[0m", NAME);
-    int running = 1;
+    
     //loop for each command line
+    int running = 1;
     while (running) {
+
+        //print current directory along with "# "
         pwd(RED);
         printf("# ");
+
+        //get line of input, parses it for ';' to get each command segment
         char input[INPUT_SIZE];
         fgets(input, sizeof(input), stdin);
         char ** cmds = get_cmd_line(input);
-        //print_string_arr(cmds);
+
+        //run for every command separated by ;
         int j = 0;
         char * cmd = cmds[j];
-        //printf("%s\n", cmd);
-        //run for every command separated by ;
         while (cmd) {
-            //printf("This is cmd[%d]: %s\n", j, cmd);
-
-            int pipe = 0;
+            
             char ** inputs;
+
+            //check for pipe
+            int pipe = 0;
             if (strstr(cmd, " | ") || strchr(cmd, '|')) {
                 pipe = 1;
                 char * operator = "|";
                 inputs = get_cmd_from_operator(cmd, operator);
             }
-            int redir_stdout = 0;
+
+            //check for redirection out
+            int redir_out = 0;
             if (strstr(cmd, " > ") || strchr(cmd, '>')) {
-                redir_stdout = 1;
+                redir_out = 1;
                 char * operator = ">";
                 inputs = get_cmd_from_operator(cmd, operator);
             }
-            int redir_stdin = 0;
+
+            //check for redirection in
+            int redir_in = 0;
             if (strstr(cmd, " < ") || strchr(cmd, '<')) {
-                redir_stdin = 1;
+                redir_in = 1;
                 char * operator = "<";
                 inputs = get_cmd_from_operator(cmd, operator);
             }
 
-            //printf("cmd1: %s\ncmd2: %s\n", inputs[0], inputs[1]);
-            char ** args;
-            if (!(pipe | redir_stdout | redir_stdin)) args = get_cmd_args(cmd);
-            //printf("cmd1: %s\ncmd2: %s\n", inputs[0], inputs[1]);
-            // char ** args1;
-            // char ** args2;
-            // if (pipe & redir_stdout & redir_stdin) {
-            //     args0 = get_cmd_args(input[0]);
-            //     args1 = get_cmd_args(input[1]);
-            // }
-            
-            //print_string_arr(args);
-            //if exit
+            //if general case (no '|', '>', or '<')
+            if (!(pipe | redir_in | redir_out)) {
 
-            //if general case
-            if (!(pipe | redir_stdout | redir_stdin)) {
+                //get arguments from command (parses by " ")
+                char ** args;
+                args = get_cmd_args(cmd);
+
+                //if exit
                 if (!strcmp(args[0], "exit")) {
                     printf("Exited shell\n");
                     return 0;
                 }
+
                 //if cd
                 else if (!strcmp(args[0], "cd")) {
                     chdir(args[1]);
-                }
-                // if pipe
-            
+                }            
+
+                //all other functions
                 else {
+
                     int process;
                     process = fork();
-                    //if child
+
+                    //if child, exec command
                     if (!process) {
                         int err = execvp(cmd, args);
                         if (err == -1) printf("%s\n", strerror(errno));
                     }
+                    //if parent, wait for child
                     else {
                         int status;
                         wait(&status);
@@ -117,8 +123,8 @@ int main(){
                 }
 
                 //if redirection
-
-                else if (redir_stdout) {
+                //if redirection out
+                else if (redir_out) {
                     int out = open(inputs[1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
                     if(out < 0) printf("%s", strerror(errno));
                     int stdout_copy = dup(STDOUT_FILENO);
@@ -136,13 +142,12 @@ int main(){
                         int status;
                         wait(&status);
                     }
-
                     dup2(stdout_copy, STDOUT_FILENO);
                     close(out);
                     close(stdout_copy);
                 }
-
-                else if (redir_stdin) {
+                //if redirection in
+                else if (redir_in) {
                     int in = open(inputs[1], O_RDONLY);
                     if(in < 0) printf("Error redirecting to in file\n%s\n", strerror(errno));
                     int stdin_copy = dup(STDIN_FILENO);
@@ -167,12 +172,18 @@ int main(){
                 }
 
                 free(inputs);
+
                 }
+
             j++;
             cmd = cmds[j];
+
         }
+
         free(cmds);
+
     }
+
     printf("Exited shell\n");
     return 0;
 }
