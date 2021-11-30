@@ -1,11 +1,16 @@
 #include "shell.h"
 
 char ** get_cmd_line(char * line) {
+
+    //deletes newline at the end of the input
     char *pos;
     if ((pos=strchr(line, '\n')) != NULL)
         *pos = '\0';
+
     char ** cmds = calloc(sizeof(line)/sizeof(char), sizeof(char *));
     char * curr = line;
+
+    //parsing by ";"
     int i = 0;
     while (curr) {
         cmds[i] = strsep(&curr, ";");
