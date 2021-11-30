@@ -24,6 +24,6 @@ char ** get_cmd_line( char * line );
 char ** get_cmd_args(char * cmd);
 
 /*
-    Parses a pipe for '|' and returns a two string array containing the piped commands (ended not using this)
+    Parses a pipe for '|', '>', or '<', and returns a two string array containing the piped or redirected commands
 */
-char ** get_cmd_from_pipe(char * line);
+char ** get_cmd_from_operator(char * line, char * operator);

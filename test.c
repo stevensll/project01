@@ -10,7 +10,7 @@
 #include <dirent.h>
 #include "shell.h"
 #define INPUT_SIZE 256
-#define OUTPUT_SIZE 1000
+#define OUTPUT_SIZE 5000
 #define NAME "PShell"
 
 int main(){
@@ -25,15 +25,25 @@ int main(){
         char input[INPUT_SIZE];
         fgets(input, sizeof(input), stdin);
         char ** cmds = get_cmd_line(input);
-        print_string_arr(cmds);
-        // print_string_arr(args);
+        //print_string_arr(cmds);
         int j = 0;
         char * cmd = cmds[j];
-        printf("%s\n", cmd);
+        //printf("%s\n", cmd);
         //run for every command separated by ;
-        while (cmds[j]) {
-            //printf("This is cmd[%d]: %s\n", j, cmd);
+        while (cmd) {
+            printf("This is cmd[%d]: %s\n", j, cmd);
+
+            int pipe = 0;
+            char ** inputs;
+            if (strstr(cmd, " | ") || strchr(cmd, '|')) {
+                pipe = 1;
+                char * operator = "|";
+                inputs = get_cmd_from_operator(cmd, operator);
+            }
+
+
             char ** args = get_cmd_args(cmd);
+            //print_string_arr(args);
             //if exit
             if (!strcmp(args[0], "exit")) {
                 printf("Exited shell\n");
@@ -44,20 +54,24 @@ int main(){
                 chdir(args[1]);
             }
             // if pipe
-            else if (strchr(cmd, '|')) {
+            else if (pipe) {
+                
+                printf("cmd1: %s\ncmd2: %s\n", inputs[0], inputs[1]);
+                FILE *output, *input;
+                char data[OUTPUT_SIZE];
+                output = popen(inputs[0], "r");
+                input = popen(inputs[1], "w");
+                // while (fgets(data, OUTPUT_SIZE, output)) {
+                //     printf("%s", data);
+                // }
+                while (fgets(data, OUTPUT_SIZE, output)) {
+                    fputs(data, input);
+                }
+                pclose(output);
+                pclose(input);
 
-                /*earlier code for different method, was going to use popen to get 
-                output of first command, then exec using that output*/
-
-                //printf("There is a |\n");
-                // char ** inputs = get_cmd_from_pipe(cmd);
-                // printf("cmd1: %s\ncmd2: %s\n", inputs[0], inputs[1]);
-                // FILE * fp;
-                // int status;
-                // char output[OUTPUT_SIZE];
-                // fp = popen
-
-
+                /*
+                bad method
                 FILE *fp = popen(cmd, "r");
                 //writes output of pipe to file fp
                 char c = fgetc(fp);
@@ -67,7 +81,21 @@ int main(){
                     c = fgetc(fp);
                 }
                 pclose(fp);
+                */
             }
+
+            //if redirection
+
+            // if  a < b
+            // else if () {
+
+            // }
+
+            // if a > b
+            // else if () {
+
+            // }
+
             // if regular function
             else {
                 int process;
@@ -81,8 +109,12 @@ int main(){
                     wait(&status);
                 }
             }
+            free(args);
+            free(inputs);
             j++;
+            cmd = cmds[j];
         }
+        free(cmds);
     }
     printf("Exited shell\n");
     return 0;
