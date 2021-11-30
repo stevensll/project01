@@ -40,6 +40,18 @@ int main(){
                 char * operator = "|";
                 inputs = get_cmd_from_operator(cmd, operator);
             }
+            int redir_to = 0;
+            if (strstr(cmd, " > ") || strchr(cmd, '>')) {
+                redir_to = 1;
+                char * operator = ">";
+                inputs = get_cmd_from_operator(cmd, operator);
+            }
+            int redir_from = 0;
+            if (strstr(cmd, " < ") || strchr(cmd, '<')) {
+                redir_from = 1;
+                char * operator = "|";
+                inputs = get_cmd_from_operator(cmd, operator);
+            }
 
 
             char ** args = get_cmd_args(cmd);

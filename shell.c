@@ -55,7 +55,6 @@ char ** get_cmd_from_operator(char * line, char * operator) {
     int i = 0;
     while (curr) {
         values[i] = strsep(&curr, operator);
-
         char * temp = values[i];
         if(values[i][0] == ' '){
             strsep(&(temp), " ");
