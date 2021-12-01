@@ -49,7 +49,7 @@
 
 ## Attempts
 
-We tried to implement the 'and' operator, `&&`, which is built into the Linux shell. `&& ` is supposed to execute the second command only if the execution command succeeds. However, we ran into problems checking the execution status of each command since using execvp ends each process. If we had more time, we would try to use popen and the error feedback it has to see whether or not the execution was successful to implement this operator. 
+We tried to implement the 'and' operator, `&&`, which is built into the Linux shell. `&&` is supposed to execute the second command only if the execution command succeeds. However, we ran into problems checking the execution status of each command since using execvp ends each process. If we had more time, we would try to use popen and the error feedback it has to see whether or not the execution was successful to implement this operator. 
 
 ## Bugs
 
