@@ -20,6 +20,7 @@ int main(){
     printf("\033[0;36m");
     printf("%s\n\033[0m", NAME);
     char color = 'g';
+    int size = INPUT_SIZE;
     
     //loop for each command line
     int running = 1;
@@ -30,7 +31,7 @@ int main(){
         printf("# ");
 
         //get line of input, parses it for ';' to get each command segment
-        char input[INPUT_SIZE];
+        char input[size];
         fgets(input, sizeof(input), stdin);
         char ** cmds = get_cmd_line(input);
 
@@ -83,6 +84,7 @@ int main(){
                     chdir(args[1]);
                 }            
 
+                //if color function
                 else if (!strcmp(args[0], "color")) {
                     if (!strcmp(args[1], "blue")) {
                         color = 'b';
@@ -96,7 +98,18 @@ int main(){
                     else {
                         printf("Invalid Color. Try \"blue\", \"green\", or \"red\". \n");
                     }
-                }            
+                }
+
+                //if setting size
+                else if (!strcmp(args[0], "set_size")) {
+                    int num;
+                    sscanf(args[1], "%d", &num);
+                    if (num < 1) printf("Invalid size.\n");
+                    else {
+                        size = num;
+                        printf("Input size set to %d bytes.\n", size);
+                    }
+                }      
 
                 //all other functions
                 else {
