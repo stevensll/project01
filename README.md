@@ -13,7 +13,7 @@
 * `exit` to close the shell
 * `cd` to change directories
 * run multiple commands in one line using `;`
-* two argument piping using ` | `
+* single pipe, two argument piping using ` | `
 * basic redirection using `<` and `>`
 * `color` to display working directory with color of choosing 
 * `size_set` to set the number of bytes allocated for command input
