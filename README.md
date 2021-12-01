@@ -27,6 +27,7 @@
   # ls -a ; echo hi //works
   # ls -a; echo hi  //works
   # ls -a ;echo hi  //works
+  # ls -a   ;echo hi // does not work
   ```
   
   You can edit the printed working directory color by using the custom command `color` using the arguments "blue", "green", or "red".
