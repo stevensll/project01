@@ -50,7 +50,9 @@
 
 ## Attempts
 
-We tried to implement the 'and' operator, `&&`, which is built into the Linux shell. `&&` is supposed to execute the second command only if the execution command succeeds. However, we ran into problems checking the execution status of each command since using execvp ends each process. If we had more time, we would try to use popen and the error feedback it has to see whether or not the execution was successful to implement this operator. 
+We tried to implement beyond single pipe - piping (e.g. `a | b | c`); however, we weren't able to get this to function properly with our given code flow. Our current code flow detects piping by checking if the input is in some form of `a | b` and then executes the piping commands. We don't detect for an abirtrary amount of piping sequences. If we were to make chained piping, there wouldn't be a way for us to resolve a pipe sequence, return the output, and then input it into the next pipe sequence. 
+
+This also the same case for multiple redirects.
 
 ## Bugs
 
