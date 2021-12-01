@@ -64,7 +64,7 @@ We also restricted the byte size to the output that is read in for our piping co
 //SETUP COMMANDS--------------------------------------------------------------------------------------------------
 
 /*
-    Prints the current working directory in the given color
+    Prints the current working directory in the given color.
 */
 void pwd(char color);
 
